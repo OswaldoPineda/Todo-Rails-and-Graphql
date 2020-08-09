@@ -8,12 +8,16 @@ const GREETING = gql`
 `;
 
 const testGraph = () => {
-  const [name, useName] = useState('');
-
+  const [name, setName] = useState('');
   const { loading, error, data } = useQuery(GREETING);
 
+  useEffect(() => {
+    if (data) {
+      setName(data.testField);
+    }
+  });
   return (
-    <h1>test graph conection </h1>
+    <h1>{name} </h1>
   );
 };
 
