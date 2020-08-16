@@ -3,7 +3,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import TestGraph from './testGraph';
 
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: '/graphql_auth',
   cache: new InMemoryCache()
 });
 

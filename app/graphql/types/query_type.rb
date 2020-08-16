@@ -1,5 +1,6 @@
 module Types
   class QueryType < Types::BaseObject
+    field :user, resolver: Resolvers::UserShow
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 

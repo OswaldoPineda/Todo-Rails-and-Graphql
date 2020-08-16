@@ -60,6 +60,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
+    bcrypt (3.1.15)
     bindex (0.8.1)
     bootsnap (1.4.7)
       msgpack (~> 1.0)
@@ -68,6 +69,16 @@ GEM
     concurrent-ruby (1.1.7)
     connection_pool (2.2.3)
     crass (1.0.6)
+    devise (4.7.2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
+    devise_token_auth (1.1.3)
+      bcrypt (~> 3.0)
+      devise (> 3.5.2, < 5)
+      rails (>= 4.2.0, < 6.1)
     erubi (1.9.0)
     execjs (2.7.0)
     ffi (1.13.1)
@@ -77,6 +88,10 @@ GEM
       railties
       sprockets-rails
     graphql (1.11.2)
+    graphql_devise (0.13.3)
+      devise_token_auth (>= 0.1.43, < 2.0)
+      graphql (>= 1.8, < 1.12.0)
+      rails (>= 4.2, < 6.2)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     jbuilder (2.10.0)
@@ -100,6 +115,7 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
+    orm_adapter (0.5.0)
     pg (1.2.3)
     puma (4.3.5)
       nio4r (~> 2.0)
@@ -144,6 +160,9 @@ GEM
       execjs
       railties (>= 3.2)
       tilt
+    responders (3.0.1)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -174,6 +193,8 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    warden (1.2.8)
+      rack (>= 2.0.6)
     web-console (4.0.4)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -197,6 +218,7 @@ DEPENDENCIES
   byebug
   graphiql-rails
   graphql (~> 1.11)
+  graphql_devise
   jbuilder (~> 2.7)
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
