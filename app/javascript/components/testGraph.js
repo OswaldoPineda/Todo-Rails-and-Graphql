@@ -1,23 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { useState, useEffect, useRef } from 'react';
+import { useQuery, useMutation, gql, ApolloClient, InMemoryCache } from '@apollo/client';
 
-const GREETING = gql`
- query {
-    testField
+const SIGN_UP = gql`
+  mutation UserSignUp($email: String!, $name: String!, $password: String!, $passwordConfirmation: String!){
+    userSignUp(email: $email, name: $name, password: $password, passwordConfirmation: $passwordConfirmation) {
+      user {
+        email
+        name
+      }
+    }
   }
 `;
 
+const authClient = new ApolloClient({
+  uri: '/graphql_auth',
+  cache: new InMemoryCache()
+});
+
 const testGraph = () => {
-  const [name, setName] = useState('');
-  const { loading, error, data } = useQuery(GREETING);
+  const [user, setUser] = useState([]);
+  const refInput = useRef('');
+  const [signUp, { data, errors }] = useMutation(SIGN_UP, { client: authClient });
 
   useEffect(() => {
     if (data) {
-      setName(data.testField);
+      setUser(data.userSignUp.user);
     }
   });
+
+  const callSignUp = () => {
+    const inputVal = refInput.current.value;
+    signUp({ variables: { name: 'waldo', email: inputVal, password: '1234567', passwordConfirmation: '1234567' }});
+  };
+
   return (
-    <h1>{name} </h1>
+    <div>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        callSignUp();
+      }}>
+        <input ref={refInput}/>
+        <button type="submit">Add Todo</button>
+      </form>
+    </div>
   );
 };
 
