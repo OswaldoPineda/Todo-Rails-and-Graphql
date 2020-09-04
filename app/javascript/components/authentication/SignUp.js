@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, gql, ApolloClient, InMemoryCache } from '@apollo/client';
+import { useMutation, gql, ApolloClient, InMemoryCache } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 
@@ -34,7 +34,7 @@ const SignUp = () => {
     signUp({
       variables: {
         name: nickname,
-        email: email,
+        email,
         password,
         passwordConfirmation: passwordConfirm
       }
@@ -48,8 +48,6 @@ const SignUp = () => {
     });
   };
 
-  if (error) {
-  }
   return(
     <section className='container mt-5'>
       { messageErrors ? <div className="alert alert-danger" role="alert">{ messageErrors }</div> : '' }
