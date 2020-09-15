@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import useAuthentication from '../customHooks/userAuthentication';
 
-const SignIn = () => {
+const SignIn = ({ path }) => {
   const { logIn } = useAuthentication();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,7 @@ const SignIn = () => {
     <section className='container mt-5'>
       <h1 className='text-center mb-5'>Sign In</h1>
       <div className='row d-flex justify-content-center'>
-        <form className='col-12 col-sm-7' onSubmit={handleSubmit(() => logIn(email, password))}>
+        <form className='col-12 col-sm-7' onSubmit={handleSubmit(() => logIn(email, password, path))}>
           <div className="mb-3">
             <label className="form-label">Email address</label>
             <input

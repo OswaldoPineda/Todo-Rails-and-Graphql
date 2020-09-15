@@ -12,6 +12,7 @@ const LOG_IN = gql`
   mutation UserLogin ($email: String!, $password: String!) {
     userLogin(email: $email,  password: $password) {
       user {
+        id
         email
         name
       }
@@ -40,7 +41,7 @@ const useAuthentication = () => {
   const history = useHistory();
   const { userStatus, setUserStatus, setUserData } = UseUserContext();
 
-  const logIn = (email, password) => {
+  const logIn = (email, password, path = '/') => {
     callLogIn({
       variables: {
         email,
@@ -48,12 +49,16 @@ const useAuthentication = () => {
       }
     }).then((res) => {
       const { credentials, user } = res.data.userLogin;
-      const userObj = { 'email': user.email, 'userToken': credentials.accessToken };
+      const userObj = {
+        'id': user.id,
+        'email': user.email,
+        'userToken': credentials.accessToken
+      };
       window.localStorage.setItem('userData', JSON.stringify(userObj));
       setUserStatus(true);
       setUserData(userObj);
       history.push({
-        pathname: '/',
+        pathname: path,
         message: `Welcome ${user.name}!!`
       });
     }).catch((error) => {
