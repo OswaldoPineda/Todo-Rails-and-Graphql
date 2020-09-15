@@ -1,59 +1,23 @@
 import React, { useState } from 'react';
-import { useMutation, gql, ApolloClient, InMemoryCache } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-
-const SIGN_UP = gql`
-  mutation UserSignUp($email: String!, $name: String!, $password: String!, $passwordConfirmation: String!){
-    userSignUp(email: $email, name: $name, password: $password, passwordConfirmation: $passwordConfirmation) {
-      user {
-        email
-        name
-      }
-    }
-  }
-`;
-
-const authClient = new ApolloClient({
-  uri: '/graphql_auth',
-  cache: new InMemoryCache()
-});
+import useAuthentication from '../customHooks/userAuthentication';
 
 const SignUp = () => {
-  const history = useHistory();
+  const { signUp } = useAuthentication();
   const [messageErrors, setMessageErrors] = useState('');
-  const [user, setUser] = useState([]);
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [signUp, { data, error }] = useMutation(SIGN_UP, { client: authClient });
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const { register, handleSubmit, watch, errors } = useForm();
-
-  const callSignUp = (data) => {
-    signUp({
-      variables: {
-        name: nickname,
-        email,
-        password,
-        passwordConfirmation: passwordConfirm
-      }
-    }).then(() => {
-      history.push({
-        pathname: '/',
-        message: 'Your account has been successfully created!!'
-      });
-    }).catch((error) => {
-      setMessageErrors(error.message);
-    });
-  };
 
   return(
     <section className='container mt-5'>
       { messageErrors ? <div className="alert alert-danger" role="alert">{ messageErrors }</div> : '' }
       <h1 className='text-center mb-5'>Sign Up</h1>
       <div className='row d-flex justify-content-center'>
-        <form className='col-12 col-sm-7' onSubmit={handleSubmit(callSignUp)}>
+        <form className='col-12 col-sm-7' onSubmit={() => handleSubmit(signUp({nickname, email, password, passwordConfirmation}))}>
           <div className="mb-3">
             <label className="form-label">Email address</label>
             <input
@@ -90,9 +54,9 @@ const SignUp = () => {
             type="password"
             name="passwordConf"
             ref={register({ required: true, min: 7, validate: (value) => { return value === watch('password'); }})}
-            className={`form-control ${ errors.passwordConf && 'is-invalid' }`}
-            onChange={(e) => setPasswordConfirm(e.currentTarget.value)} />
-            { errors.passwordConf && <div className="invalid-feedback">Doesn't match with the password.</div> }
+            className={`form-control ${ errors.passwordConfirmation && 'is-invalid' }`}
+            onChange={(e) => setPasswordConfirmation(e.currentTarget.value)} />
+            { errors.passwordConfirmation && <div className="invalid-feedback">Doesn't match with the password.</div> }
           </div>
           <button type="submit" className="btn btn-lg btn-block btn-primary">Sign Up</button>
         </form>

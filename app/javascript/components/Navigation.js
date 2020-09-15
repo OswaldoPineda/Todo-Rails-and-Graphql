@@ -1,40 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import useAuthentication from './customHooks/userAuthentication';
+import { NavLink, Link } from 'react-router-dom';
+import { UseUserContext } from './contexts/UserStatusContext';
 
-const Navigation = (props) => {
-  const callLogOut = () => {
-    window.localStorage.removeItem('userEmail');
-    window.localStorage.removeItem('userToken');
-    props.setUserStatus(false);
+const Navigation = () => {
+  const { callLogOut } = useAuthentication();
+  const { userStatus } = UseUserContext();
+
+  const loggedUserNav = () => {
+    return (
+      <ul className="navbar-nav ml-auto mb-lg-0">
+        <li className="nav-item">
+          <NavLink to="/account"
+          activeClassName='active'
+          className="nav-link">Account</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/tasks"
+          activeClassName='active'
+          className="nav-link">My tasks</NavLink>
+        </li>
+        <li className="nav-item">
+          <span onClick={callLogOut} className="nav-link">Log Out</span>
+        </li>
+      </ul>
+    );
   };
 
-  const renderButtons = () => {
-    if (props.userStatus) {
-      return(
-        <ul className="navbar-nav ml-auto mb-lg-0">
-          <li className="nav-item">
-            <Link to="/account" className="nav-link">Account</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/tasks" className="nav-link">My tasks</Link>
-          </li>
-          <li className="nav-item">
-            <span onClick={callLogOut} className="nav-link">Log Out</span>
-          </li>
-        </ul>
-      );
-    } else {
-      return(
-        <ul className="navbar-nav ml-auto mb-lg-0">
-          <li className="nav-item">
-            <Link to="/signin" className="nav-link">Signin</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/signup" className="nav-link">Signup</Link>
-          </li>
-        </ul>
-      );
-    }
+  const loggedOutUserNav = () => {
+    return (
+      <ul className="navbar-nav ml-auto mb-lg-0">
+        <li className="nav-item">
+          <NavLink to="/signin"
+          activeClassName='active'
+          className="nav-link">Signin</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/signup"
+          activeClassName='active'
+          className="nav-link">Signup</NavLink>
+        </li>
+      </ul>
+    );
   };
 
   return(
@@ -45,7 +52,7 @@ const Navigation = (props) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
-            { renderButtons() }
+          { userStatus ? loggedUserNav() : loggedOutUserNav() }
         </div>
       </div>
     </nav>

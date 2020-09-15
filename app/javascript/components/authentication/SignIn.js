@@ -1,60 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation, gql, ApolloClient, InMemoryCache } from '@apollo/client';
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import useAuthentication from '../customHooks/userAuthentication';
 
-const LOG_IN = gql`
-  mutation UserLogin ($email: String!, $password: String!) {
-    userLogin(email: $email,  password: $password) {
-      user {
-        email
-        name
-      }
-      credentials {
-        accessToken
-        tokenType
-      }
-    }
-  }
-`;
-
-const authClient = new ApolloClient({
-  uri: '/graphql_auth',
-  cache: new InMemoryCache()
-});
-
-const SignIn = (props) => {
-  const [logIn, { data, error }] = useMutation(LOG_IN, { client: authClient });
+const SignIn = () => {
+  const { logIn } = useAuthentication();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { register, handleSubmit, watch, errors } = useForm();
-  const history = useHistory();
-
-  const callLogin = () => {
-    logIn({
-      variables: {
-        email,
-        password
-      }
-    }).then((res) => {
-      const { credentials, user } = res.data.userLogin;
-      window.localStorage.setItem('userEmail', user.email);
-      window.localStorage.setItem('userToken', credentials.accessToken);
-      props.setUserStatus(true);
-      history.push({
-        pathname: '/',
-        message: `Welcome ${user.name}!!`
-      });
-    }).catch((error) => {
-      console.error('Error Login:', error);
-    });
-  };
 
   return(
     <section className='container mt-5'>
       <h1 className='text-center mb-5'>Sign In</h1>
       <div className='row d-flex justify-content-center'>
-        <form className='col-12 col-sm-7' onSubmit={handleSubmit(callLogin)}>
+        <form className='col-12 col-sm-7' onSubmit={handleSubmit(() => logIn(email, password))}>
           <div className="mb-3">
             <label className="form-label">Email address</label>
             <input
