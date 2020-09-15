@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-    devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :rememberable
+  has_many :lists, dependent: :destroy
+
+  devise :database_authenticatable,
+       :registerable,
+       :recoverable,
+       :rememberable
 
   include GraphqlDevise::Concerns::Model
 
