@@ -18,7 +18,10 @@ const LOG_IN = gql`
       }
       credentials {
         accessToken
+        client
+        expiry
         tokenType
+        uid
       }
     }
   }
@@ -52,7 +55,10 @@ const useAuthentication = () => {
       const userObj = {
         'id': user.id,
         'email': user.email,
-        'userToken': credentials.accessToken
+        'userToken': credentials.accessToken,
+        'expiry': credentials.expiry,
+        'uid': credentials.uid,
+        'client': credentials.client,
       };
       window.localStorage.setItem('userData', JSON.stringify(userObj));
       setUserStatus(true);

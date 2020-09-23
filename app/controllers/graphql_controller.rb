@@ -1,4 +1,7 @@
 class GraphqlController < ApplicationController
+  protect_from_forgery with: :null_session
+  include GraphqlDevise::Concerns::SetUserByToken
+
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
@@ -8,11 +11,11 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
+    # context = {
       # Query context goes here, for example:
       # current_user: current_user,
-    }
-    result = TodoRailsGraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    # }
+    result = TodoRailsGraphqlSchema.execute(query, variables: variables, context: graphql_context(:user), operation_name: operation_name)
     render json: result
   rescue => e
     raise e unless Rails.env.development?
