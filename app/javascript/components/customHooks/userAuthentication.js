@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMutation, gql, ApolloClient, InMemoryCache } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import { UseUserContext } from '../contexts/UserStatusContext';

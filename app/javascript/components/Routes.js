@@ -4,11 +4,16 @@ import HelloWorld from './HelloWorld';
 import SignUp from './authentication/SignUp';
 import SignIn from './authentication/SignIn';
 import ListPage from './lists/ListPage';
+import TaskPage from './tasks/taskPage';
 import PrivateRoute from './PrivateRoute';
 
-const Routes = () => {
+const Routes = (props) => {
+  // const listId = props.match.params.listId;
+  // const taskId = props.match.params.taskId;
+
   return(
     <Switch>
+      <PrivateRoute path='/lists/:id/tasks' component={TaskPage} />
       <PrivateRoute path='/lists' component={ListPage} />
       <Route path='/signup'>
         <SignUp />

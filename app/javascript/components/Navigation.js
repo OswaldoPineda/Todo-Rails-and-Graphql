@@ -16,9 +16,9 @@ const Navigation = () => {
           className="nav-link">Account</NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/tasks"
+          <NavLink to="/lists"
           activeClassName='active'
-          className="nav-link">My tasks</NavLink>
+          className="nav-link">My Lists</NavLink>
         </li>
         <li className="nav-item">
           <span onClick={callLogOut} className="nav-link">Log Out</span>

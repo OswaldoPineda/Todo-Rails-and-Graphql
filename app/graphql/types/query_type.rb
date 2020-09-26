@@ -1,6 +1,11 @@
 module Types
   class QueryType < Types::BaseObject
+    # User Resolvers
     field :user, resolver: Resolvers::UserShow
+
+    #Lists Resolvers
+    field :lists, resolver: Resolvers::ListsShow, authenticate: true
+
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 

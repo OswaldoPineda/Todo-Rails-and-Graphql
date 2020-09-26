@@ -6,7 +6,7 @@ import SignIn from './authentication/SignIn';
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { userStatus } = UseUserContext();
 
-  if (userStatus) return(<Route {...rest} component={Component} />)
+  if (userStatus) return(<Route {...rest} exact component={Component} />)
   else return (<Route {...rest} ><SignIn path={rest.path}/></Route>)
 };
 
