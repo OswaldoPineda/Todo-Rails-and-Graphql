@@ -36,7 +36,7 @@ const ListPage = () => {
       return(
         <ul className="list-group col-sm-6 mx-auto">
           {lists.map(list => (
-            <List list={list} key={list.id} />
+            <List list={list} lists={lists} setLists={setLists} key={list.id} />
           ))}
         </ul>
       );
