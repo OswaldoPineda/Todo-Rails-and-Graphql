@@ -9,6 +9,8 @@ module Types
       description: "Mutation to create a new list"
     field :delete_list, resolver: Mutations::DeleteList, authenticate: true,
       description: "Mutation to delete a list"
+    field :edit_list, resolver: Mutations::EditList, authenticate: true,
+      description: "Mutation to edit a list"
 
     # Task Mutations
     field :create_task, resolver: Mutations::CreateTask, authenticate: true,
